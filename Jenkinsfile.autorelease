@@ -1,0 +1,43 @@
+@Library('dynatrace@master') _
+
+pipeline {
+  parameters {
+    booleanParam(name: 'BUILD_RELEASE', defaultValue: false, description: 'Increase version number and create a new release') 
+  }
+  agent {
+    label 'maven'
+  }
+  environment {
+    APP_NAME = "carts"
+    VERSION = readFile('version').trim()
+    MINOR_VERSION_INCREASED = ${env.VERSION}.split('.')[2].toInteger() + 1
+    VERSION_INCREASED = ${env.VERSION}.split('.')[0] + '.' + ${env.VERSION}.split('.')[1] + '.' + ${env.MINOR_VERSION_INCREASED} 
+    ARTEFACT_ID = "sockshop/" + "${env.APP_NAME}"
+    TAG = "${env.DOCKER_REGISTRY_URL}:5000/library/${env.ARTEFACT_ID}"
+    TAG_DEV = "${env.TAG}-${env.VERSION}-${env.BUILD_NUMBER}"
+    TAG_STAGING = "${env.TAG}-${env.VERSION}"
+  }
+  stages {
+    stage('Increase version number') {
+      steps {
+        container('git') {
+          withCredentials([usernamePassword(credentialsId: 'git-credentials-acm', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            writeFile('version', ${env.VERSION_INCREASED})
+            sh "git config --global user.email ${env.GITHUB_USER_EMAIL}"
+            sh "git add version"
+            sh "git commit -am 'Increased version to ${env.VERSION_INCREASED}'"
+            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${env.GITHUB_ORGANIZATION}/carts"
+            sh "git checkout -b release/${env.VERSION_INCREASED}"
+            sh "git push --set-upstream https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${env.GITHUB_ORGANIZATION}/carts release/${env.VERSION_INCREASED}"
+          } 
+        }
+      }
+    }
+    stage('Scan multibranch pipeline') {
+      steps {
+        build job: "carts",
+          parameters: []
+      }
+    }
+  }
+}
