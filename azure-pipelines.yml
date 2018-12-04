@@ -25,5 +25,5 @@ steps:
 
 - script: |
     docker login -u $(dockerId) -p $(dockerPassword)
-    docker push $(env.TAG_DEV)
+    docker push $(TAG_DEV)
   displayName: 'docker hub push'
