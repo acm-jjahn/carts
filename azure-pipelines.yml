@@ -1,0 +1,29 @@
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=vsts
+# https://github.com/acm-jjahn/carts/blob/master/Jenkinsfile
+#TAG = "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+  APP_NAME: "carts"
+  VERSION: "1"
+  ARTEFACT_ID: "sockshop/$(APP_NAME)"
+  DOCKER_REGISTRY_URL: ""
+  TAG = "robjahn/carts"
+  TAG_DEV = "$(TAG)-$(VERSION)-$(build.buildId)"
+  TAG_STAGING = "$(TAG)-$(VERSION)"
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+
+- script: docker build -t $(TAG_DEV) .
+  displayName: 'docker build'
+
+- script: |
+    docker login -u $(dockerId) -p $(dockerPassword)
+    docker push $(env.TAG_DEV)
+  displayName: 'docker hub push'
