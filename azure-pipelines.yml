@@ -10,9 +10,9 @@ variables:
   VERSION: "1"
   ARTEFACT_ID: "sockshop/$(APP_NAME)"
   DOCKER_REGISTRY_URL: ""
-  TAG = "robjahn/carts"
-  TAG_DEV = "$(TAG)-$(VERSION)-$(build.buildId)"
-  TAG_STAGING = "$(TAG)-$(VERSION)"
+  TAG: "robjahn/carts"
+  TAG_DEV: "$(TAG)-$(VERSION)-$(build.buildId)"
+  TAG_STAGING: "$(TAG)-$(VERSION)"
 
 steps:
 - task: Maven@3
