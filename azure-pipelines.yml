@@ -41,14 +41,3 @@ steps:
     azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: 'dt_push_event.ps1'
-    arguments: 
-      $env:TENANTURL 
-      $env:APITOKEN
-    env: 
-      TenantUrl: $(dtTenantUrl) 
-      ApiToken: $(dtApiToken)
