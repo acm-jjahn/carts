@@ -1,6 +1,7 @@
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=vsts
 # https://github.com/acm-jjahn/carts/blob/master/Jenkinsfile
 #TAG = "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/powershell?view=vsts
 
 pool:
   vmImage: 'Ubuntu 16.04'
@@ -9,8 +10,10 @@ variables:
   APP_NAME: "carts"
   VERSION: "1"
   ARTEFACT_ID: "sockshop/$(APP_NAME)"
-  DOCKER_REGISTRY_URL: ""
-  TAG: "robjahn/carts"
+  DOCKER_REGISTRY_URL: "rjahndemoregistry.azurecr.io"
+  DOCKER_REGISTRY: "rjahndemoregistry.azurecr.io"
+  SUBSCRIPTION_ENDPOINT: "http://rjahn-demo-acm"
+  TAG: "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
   TAG_DEV: "$(TAG)-$(VERSION)-$(build.buildId)"
   TAG_STAGING: "$(TAG)-$(VERSION)"
 
@@ -20,10 +23,32 @@ steps:
     mavenPomFile: 'pom.xml'
     goals: 'clean package'
 
-- script: docker build -t $(TAG_DEV) .
-  displayName: 'docker build'
+- task: Docker@1
+  displayName: 'Build an image'
+  inputs:
+    imageName: $(TAG_DEV)
 
-- script: |
-    docker login -u $(dockerId) -p $(dockerPassword)
-    docker push $(TAG_DEV)
-  displayName: 'docker hub push'
+- task: Docker@1
+  displayName: Login
+  inputs:
+    azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
+    azureContainerRegistry: $(DOCKER_REGISTRY)
+    command: login
+
+- task: Docker@1
+  displayName: 'Push an image'
+  inputs:
+    azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
+    azureContainerRegistry: $(DOCKER_REGISTRY)
+    command: 'push'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'filePath'
+    filePath: 'dt_push_event.ps1'
+    arguments: 
+      $env:DTTENANTURL 
+      $env:DTAPITOKEN
+    env: 
+      dtTenantUrl: $(dtTenantUrl) 
+      dtApiToken: $(dtApiToken)
