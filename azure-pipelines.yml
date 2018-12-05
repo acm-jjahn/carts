@@ -47,8 +47,8 @@ steps:
     targetType: 'filePath'
     filePath: 'dt_push_event.ps1'
     arguments: 
-      $env:DTTENANTURL 
-      $env:DTAPITOKEN
+      $env:TENANTURL 
+      $env:APITOKEN
     env: 
-      dtTenantUrl: $(dtTenantUrl) 
-      dtApiToken: $(dtApiToken)
+      TenantUrl: $(dtTenantUrl) 
+      ApiToken: $(dtApiToken)
