@@ -3,6 +3,10 @@
 #TAG = "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/powershell?view=vsts
 
+#'azureSubscriptionEndpoint' input is the name of Azure Service Connection. 
+# See Azure Resource Manager service connection to manually set up the connection. 
+#'dockerRegistryEndpoint' input is the name of Docker Registry service connection.
+
 pool:
   vmImage: 'Ubuntu 16.04'
 
@@ -10,10 +14,9 @@ variables:
   APP_NAME: "carts"
   VERSION: "1"
   ARTEFACT_ID: "sockshop/$(APP_NAME)"
-  DOCKER_REGISTRY_URL: "rjahn-demo-acm-cluster-57a16457.hcp.eastus.azmk8s.io"
-  DOCKER_REGISTRY: "rjahn-demo-acm-cluster-57a16457.hcp.eastus.azmk8s.io"
-  SUBSCRIPTION_ENDPOINT: "rjahn-demo-acm"
-  TAG: "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
+  DOCKER_REGISTRY: "rjahndemoregistry.azurecr.io"
+  SUBSCRIPTION_ENDPOINT: "InnovationLab-Dev"
+  TAG: "$(DOCKER_REGISTRY)/$(ARTEFACT_ID)"
   TAG_DEV: "$(TAG)-$(VERSION)-$(build.buildId)"
   TAG_STAGING: "$(TAG)-$(VERSION)"
 
