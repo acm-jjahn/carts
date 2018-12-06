@@ -46,7 +46,6 @@ steps:
     command: 'push'
     imageName: $(TAG_DEV)
 
-steps:
 - task: CopyFiles@2
   inputs:
     contents: manifest/*
