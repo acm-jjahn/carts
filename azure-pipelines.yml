@@ -41,3 +41,4 @@ steps:
     azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
+    imageName: $(TAG_DEV)
