@@ -14,8 +14,8 @@ variables:
   APP_NAME: "carts"
   VERSION: "1"
   ARTEFACT_ID: "sockshop/$(APP_NAME)"
-  DOCKER_REGISTRY: $(dockerRegistryEndpoint)
-  SUBSCRIPTION_ENDPOINT: $(azureSubscriptionEndpoint)
+  DOCKER_REGISTRY: "$(dockerRegistryEndpoint)"
+  SUBSCRIPTION_ENDPOINT: "$(azureSubscriptionEndpoint)"
   TAG: "$(DOCKER_REGISTRY)/$(ARTEFACT_ID)"
   TAG_DEV: "$(TAG)-$(VERSION)-$(build.buildId)"
   TAG_STAGING: "$(TAG)-$(VERSION)"
