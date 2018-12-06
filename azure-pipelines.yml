@@ -45,3 +45,13 @@ steps:
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
     imageName: $(TAG_DEV)
+
+steps:
+- task: CopyFiles@2
+  inputs:
+    contents: manifest/*
+    targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: Yaml
