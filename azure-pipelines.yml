@@ -15,7 +15,7 @@ steps:
 - script: |
     myversion=`cat version`
     echo myversion = $myversion
-    echo '##vso[task.setvariable variable=THEVERSION]$myversion'
+    echo '##vso[task.setvariable variable=THEVERSION]$(myversion)'
     echo myversion = $myversion
 
 - script: |
