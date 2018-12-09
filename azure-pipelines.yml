@@ -21,20 +21,8 @@ steps:
     echo "##vso[task.setvariable variable=TAG]$theTag"
     echo "##vso[task.setvariable variable=DEV_TAG]$theDevTag"
     echo "##vso[task.setvariable variable=TAG_STAGING]$TheStageTag"
-    echo VERSION = $VERSION
-    echo TAG = $TAG
-    echo DEV_TAG = $DEV_TAG
-    echo TAG_STAGING = $TAG_STAGING
-    echo VERSION = $(VERSION)
-    echo TAG = $(TAG)
-    echo DEV_TAG = $(DEV_TAG)
-    echo TAG_STAGING = $(TAG_STAGING)
 
 - script: |
-    echo versionFromFile = $versionFromFile
-    echo theTag = $theTag
-    echo theDevTag = $theDevTag
-    echo TheStageTag = $TheStageTag
     echo VERSION = $VERSION
     echo TAG = $TAG
     echo DEV_TAG = $DEV_TAG
@@ -48,7 +36,7 @@ steps:
 - task: Docker@1
   displayName: 'Build an image'
   inputs:
-    imageName: $(TAG_DEV)
+    imageName: $TAG_DEV
 
 - task: Docker@1
   displayName: Login
@@ -67,6 +55,7 @@ steps:
 
 - script: |
     sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
+    cat manifest/$(APP_NAME).yml
 
 - task: CopyFiles@2
   inputs:
