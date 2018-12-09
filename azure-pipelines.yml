@@ -43,7 +43,7 @@ steps:
     imageName: $(TAG_DEV)
 
 - script: |
-  sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
+    sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
 
 - task: CopyFiles@2
   inputs:
