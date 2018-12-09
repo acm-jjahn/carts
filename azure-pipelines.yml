@@ -13,7 +13,7 @@ variables:
 
 steps:
 - script: |
-    shopt -s globstar && myversion=$(echo cat ./version)
+    shopt -s globstar && myversion=`echo cat ./version`
     echo myversion = $myversion
     echo "##vso[task.setvariable variable=theversion]$myversion"
 
