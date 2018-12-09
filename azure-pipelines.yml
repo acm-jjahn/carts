@@ -67,6 +67,14 @@ steps:
     azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
+    imageName: $TAG_DEV
+
+- task: Docker@1
+  displayName: 'Push an image'
+  inputs:
+    azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
+    azureContainerRegistry: $(DOCKER_REGISTRY)
+    command: 'push'
     imageName: $(TAG_DEV)
 
 - task: CopyFiles@2
