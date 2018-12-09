@@ -13,9 +13,8 @@ variables:
 
 steps:
 - script: |
-    myversion=`cat version`
-    echo myversion = $myversion
-    echo '##vso[task.setvariable variable=THEVERSION]$(myversion)'
+    $myversion = Get-Content .\version -Raw
+    Write-Host "##vso[task.setvariable variable=THEVERSION;]$myversion"
     echo myversion = $myversion
 
 - script: |
