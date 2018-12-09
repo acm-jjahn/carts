@@ -13,14 +13,16 @@ variables:
 
 steps:
 - script: |
-    $myversion = Get-Content .\version -Raw
-    Write-Host "##vso[task.setvariable variable=THEVERSION;]$myversion"
+    $myversion = "Get-Content .\version -Raw"
     echo myversion = $myversion
+    Write-Host "##vso[task.setvariable variable=theVersion;]$myversion"
 
 - script: |
     echo MyVERSION = $myversion
     echo THEVERSION = $THEVERSION
     echo THEVERSION = $(THEVERSION)
+    echo theVersion = $theVersion
+    echo theVersion = $(theVersion)
 
 - task: Maven@3
   inputs:
