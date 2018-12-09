@@ -14,7 +14,7 @@ variables:
 steps:
 - script: |
   myversion=$(cat version)
-  echo "##vso[task.setvariable variable=THEVERSION]$myversion"
+  echo '##vso[task.setvariable variable=THEVERSION]$myversion'
   echo THEVERSION=$(THEVERSION)
 
 - task: Maven@3
