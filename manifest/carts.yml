@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: carts
-        image: rjahndemoregistry.azurecr.io/sockshop/carts-1-67
+        image: to-be-replaced-by-pipeline
         env:
         - name: JAVA_OPTS
           value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom

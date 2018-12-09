@@ -1,12 +1,3 @@
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/maven?view=vsts
-# https://github.com/acm-jjahn/carts/blob/master/Jenkinsfile
-#TAG = "$(DOCKER_REGISTRY_URL):5000/library/$(ARTEFACT_ID)"
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/powershell?view=vsts
-
-#'azureSubscriptionEndpoint' input is the name of Azure Service Connection. 
-# See Azure Resource Manager service connection to manually set up the connection. 
-#'dockerRegistryEndpoint' input is the name of Docker Registry service connection.
-
 pool:
   vmImage: 'Ubuntu 16.04'
 
@@ -21,6 +12,11 @@ variables:
   TAG_STAGING: "$(TAG)-$(VERSION)"
 
 steps:
+- script: |
+  myversion=$(cat version)
+  echo "##vso[task.setvariable variable=THEVERSION]$myversion"
+  echo THEVERSION=$(THEVERSION)
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -45,6 +41,9 @@ steps:
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
     imageName: $(TAG_DEV)
+
+- script: |
+  sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
 
 - task: CopyFiles@2
   inputs:
