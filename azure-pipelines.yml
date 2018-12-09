@@ -14,10 +14,20 @@ variables:
 steps:
 - script: |
     myversion=`cat version`
+    echo myversion = $myversion
     echo '##vso[task.setvariable variable=THEVERSION]$myversion'
     echo MyVERSION = $MYVERSION
+    echo myversion = $myversion
     echo MyVERSION = $(MYVERSION)
     echo THEVERSION = $THEVERSION
+    echo THEVERSION = $(THEVERSION)
+    myversion=12345
+    echo '##vso[task.setvariable variable=THEVERSION]$myversion'
+    echo MyVERSION = $MYVERSION
+    echo myversion = $myversion
+    echo MyVERSION = $(MYVERSION)
+    echo THEVERSION = $THEVERSION
+    echo THEVERSION = $(THEVERSION)
 
 - task: Maven@3
   inputs:
