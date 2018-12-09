@@ -14,8 +14,8 @@ variables:
 steps:
 - script: |
     myversion=$(cat ./version)
-    echo myversion = $version
-    echo "##vso[task.setvariable variable=theversion]$myversion"
+    echo myversion = $myversion
+    echo "##vso[task.setvariable variable=THEVERSION]$myversion"
 
 - script: |
     echo MyVERSION = $myversion
