@@ -27,6 +27,14 @@ steps:
     echo TAG = $TAG
     echo DEV_TAG = $DEV_TAG
     echo TAG_STAGING = $TAG_STAGING
+    echo VERSION = $(VERSION)
+    echo TAG = $(TAG)
+    echo DEV_TAG = $(DEV_TAG)
+    echo TAG_STAGING = $(TAG_STAGING)
+
+- script: |
+    sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
+    cat manifest/$(APP_NAME).yml
 
 - task: Maven@3
   inputs:
@@ -36,7 +44,7 @@ steps:
 - task: Docker@1
   displayName: 'Build an image'
   inputs:
-    imageName: $TAG_DEV
+    imageName: $(TAG_DEV)
 
 - task: Docker@1
   displayName: Login
@@ -52,10 +60,6 @@ steps:
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: 'push'
     imageName: $(TAG_DEV)
-
-- script: |
-    sed -i 's#image: .*#image: $(TAG_DEV)#' manifest/$(APP_NAME).yml
-    cat manifest/$(APP_NAME).yml
 
 - task: CopyFiles@2
   inputs:
