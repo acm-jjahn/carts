@@ -11,7 +11,7 @@ steps:
 - script: |
     versionFromFile=$(cat ./version)
     theTag=$(DOCKER_REGISTRY)/$(ARTEFACT_ID)
-    theDevTag=$theTag-$versionFromFile-$(BuildID)
+    theDevTag=$theTag-$versionFromFile-$(Build.BuildId)
     TheStageTag=$theTag-$versionFromFile
     echo versionFromFile = $versionFromFile
     echo theTag = $theTag
