@@ -13,7 +13,7 @@ variables:
 
 steps:
 - script: |
-    myversion = `cat ./version`
+    myversion = $(cat ./version)
     echo myversion = $version
     echo "##vso[task.setvariable variable=theversion]$myversion"
 
