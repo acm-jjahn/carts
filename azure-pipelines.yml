@@ -21,20 +21,9 @@ steps:
     echo "##vso[task.setvariable variable=TAG]$theTag"
     echo "##vso[task.setvariable variable=TAG_DEV]$theDevTag"
     echo "##vso[task.setvariable variable=TAG_STAGING]$TheStageTag"
-    echo VERSION = $VERSION
-    echo TAG = $TAG
-    echo TAG_DEV = $TAG_DEV
-    echo TAG_STAGING = $TAG_STAGING
-    echo VERSION = $(VERSION)
-    echo TAG = $(TAG)
-    echo TAG_DEV = $(TAG_DEV)
-    echo TAG_STAGING = $(TAG_STAGING)
+  name: 'Set build variables'
 
 - script: |
-    echo VERSION = $VERSION
-    echo TAG = $TAG
-    echo TAG_DEV = $TAG_DEV
-    echo TAG_STAGING = $TAG_STAGING
     echo VERSION = $(VERSION)
     echo TAG = $(TAG)
     echo TAG_DEV = $(TAG_DEV)
@@ -60,14 +49,6 @@ steps:
     azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
     azureContainerRegistry: $(DOCKER_REGISTRY)
     command: login
-
-- task: Docker@1
-  displayName: 'Push an image'
-  inputs:
-    azureSubscriptionEndpoint: $(SUBSCRIPTION_ENDPOINT)
-    azureContainerRegistry: $(DOCKER_REGISTRY)
-    command: 'push'
-    imageName: $TAG_DEV
 
 - task: Docker@1
   displayName: 'Push an image'
